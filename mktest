@@ -1,0 +1,73 @@
+import random
+def mktest(j):
+	# I think, it maybe helpful to make more tests and test my algorithms.
+	#so I make testcases by Greedy algorithm
+	print("start making test #" + str(j) )
+	
+	L = []
+	randn = random.randint(1,30)
+	randP = random.randint(5,20)
+	A = [0]
+	for i in range(randn):
+		L.append(random.randint(1,randP))
+	testFileName = 'testinput_' + str(j)+'.txt'
+	print(testFileName)
+	newP = 0
+	word = 0
+	for i in range(randn):
+		if (newP-L[i]>=0): # we don't need new line
+			A.append(A[i] -L[i]-word)
+			if (newP-L[i]==0 or newP-L[i]==1):#if we need new line
+				newP = 0
+			else:#if we may not need new line
+				word = 1
+				newP = newP-L[i] -word
+		else:#we need new line
+			newP = randP - L[i]
+			A.append(A[i] + newP)
+			if (newP ==0 or newP == 1): #if the word enough large length.
+				newP = 0
+			else:#if there can be next word
+				newP = newP-1
+				word = 1
+	f = open(testFileName,'w')
+	f.write(str(randn) + ' ' + str(randP) + '\n')
+	for i in range(randn):
+		if (i==randn-1):
+			f.write(str(L[i]))
+		else:
+			
+			f.write(str(L[i])+ ' ')
+	f2 = open(testFileName.replace('input','output'),'w')
+	f2.write(str(A[randn]))
+	f2.close()
+	f.close()
+	result = A[randn]
+	
+	return [result,randn,randP,L]	
+	
+
+def main():
+	n = 10
+	for i in range(n):
+		resultA = mktest(i)
+		result = resultA[0]
+		n = resultA[1]
+		p = resultA[2]
+		L = resultA[3]
+		resultB = proc(n,p,L)
+		if (result!=resultB):
+			print("The algoritm is wrong!!")
+			print("greedy :",result)
+			print("DP :",resultB)
+			break
+		else:
+			print("good job!!")		
+
+def proc(n,P,L):
+	
+	#n and P and L was given. that is, you don't need to read a file.
+	
+	# at last, you should return A[n] to compare it with answer.	
+main()
+	
